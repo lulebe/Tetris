@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/lulebe/Tetris#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "node-telegram-bot-api": "^0.23.3"
+  },
+  "devDependencies": {
+    "flightplan": "^0.6.14"
   }
 }
