@@ -1,2 +1,6 @@
 node_modules
 constants.json
+constants.js
+config.js
+private.key
+public.pem
