@@ -196,6 +196,7 @@
 
 			this.matrix = initMatrix(consts.ROW_COUNT,consts.COLUMN_COUNT);
 			this.reset();
+			views.setStart(false);
 
 			this._initEvents();
 			this._fireShape();
@@ -220,6 +221,7 @@
 		},
 		//Start game
 		start:function(){
+			views.setStart(true);
 			this.running = true;
 			window.requestAnimationFrame(utils.proxy(this._refresh,this));
 		},
@@ -230,9 +232,42 @@
 			this.prevTime = this.currentTime;
 		},
 		//Game over
-		gamveOver:function(){
+		gameOver:function(){
 
 		},
+		//button events
+		_ctrlLeftHandler:function(e) {
+				var matrix = this.matrix;
+				if (this.isGameOver||!this.shape) {
+					return;
+				}
+				this.shape.goLeft(matrix);
+				this._draw();
+		},
+		_ctrlRightHandler:function(e) {
+				var matrix = this.matrix;
+				if (this.isGameOver||!this.shape) {
+					return;
+				}
+				this.shape.goRight(matrix);
+				this._draw();
+			},
+		_ctrlRotateHandler:function(e) {
+				var matrix = this.matrix;
+				if (this.isGameOver||!this.shape) {
+					return;
+				}
+				this.shape.rotate(matrix);
+				this._draw();
+			},
+		_ctrlDownHandler:function(e) {
+				var matrix = this.matrix;
+				if (this.isGameOver||!this.shape) {
+					return;
+				}
+				this.shape.goDown(matrix);
+				this._draw();
+			},
 		// All key event handlers
 		_keydownHandler:function(e){
 
@@ -269,6 +304,11 @@
 		},
 		// Bind game events
 		_initEvents:function(){
+			views.ctrls.left.addEventListener('mousedown', utils.proxy(this._ctrlLeftHandler, this), false);
+			views.ctrls.right.addEventListener('mousedown', utils.proxy(this._ctrlRightHandler, this), false);
+			views.ctrls.rotate.addEventListener('mousedown', utils.proxy(this._ctrlRotateHandler, this), false);
+			views.ctrls.down.addEventListener('mousedown', utils.proxy(this._ctrlDownHandler, this), false);
+			views.btnStart.addEventListener('click', utils.proxy(this.start, this), false);
 			window.addEventListener('keydown',utils.proxy(this._keydownHandler,this),false);
 			views.btnRestart.addEventListener('click',utils.proxy(this._restartHandler,this),false);
 		},
@@ -893,6 +933,11 @@
 	var gameOver = $('gameOver');
 	var btnRestart = $('restart');
 	var finalScore = $('finalScore');
+	var ctrlLeft = $('ctrlLeft');
+	var ctrlRight = $('ctrlRight');
+	var ctrlRotate = $('ctrlRotate');
+	var ctrlDown = $('ctrlDown');
+	var btnStart = $('start');
 
 
 	//defaults
@@ -904,8 +949,8 @@
 	*/
 	var getContainerSize = function(maxW,maxH){
 
-		var dw = document.documentElement.clientWidth;
-		var dh = document.documentElement.clientHeight;
+		var dw = document.documentElement.clientWidth * 0.75;
+		var dh = document.documentElement.clientHeight * 0.75;
 
 		var size = {};
 		if (dw>dh){
@@ -928,7 +973,6 @@
 		var st = container.style;
 		st.height = size.height + 'px';
 		st.width = size.width + 'px';
-		st.marginTop = (-(size.height/2)) + 'px';
 		st.marginLeft = (-(size.width/2)) + 'px';
 
 		//layout scene
@@ -958,6 +1002,8 @@
 		  this.scene = scene;
 		  this.preview = preview;
 		  this.btnRestart = btnRestart;
+			this.btnStart = btnStart;
+			this.ctrls = {left: ctrlLeft, right: ctrlRight, rotate: ctrlRotate, down: ctrlDown}
 		  layoutView(this.container,maxW,maxH);
 		  this.scene.focus();
 
@@ -988,7 +1034,35 @@
 		},
 		// Set game over view
 		setGameOver:function(isGameOver){
+			if (isGameOver) {
+				ctrlLeft.classList.add("hidden");
+				ctrlRight.classList.add("hidden");
+				ctrlRotate.classList.add("hidden");
+				ctrlDown.classList.add("hidden");
+				btnRestart.classList.remove("hidden");
+			} else {
+				ctrlLeft.classList.remove("hidden");
+				ctrlRight.classList.remove("hidden");
+				ctrlRotate.classList.remove("hidden");
+				ctrlDown.classList.remove("hidden");
+				btnRestart.classList.add("hidden");
+			}
 			gameOver.style.display = isGameOver?'block':'none';
+		},
+		setStart:function (started) {
+			if (started) {
+				ctrlLeft.classList.remove("hidden");
+				ctrlRight.classList.remove("hidden");
+				ctrlRotate.classList.remove("hidden");
+				ctrlDown.classList.remove("hidden");
+				btnStart.classList.add("hidden");
+			} else {
+			ctrlLeft.classList.add("hidden");
+			ctrlRight.classList.add("hidden");
+			ctrlRotate.classList.add("hidden");
+			ctrlDown.classList.add("hidden");
+			btnStart.classList.remove("hidden");
+			}
 		}
 	};
 

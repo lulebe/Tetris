@@ -1,0 +1,23 @@
+{
+  "name": "telegramtetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://LuLeBe@github.com/lulebe/Tetris.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lulebe/Tetris/issues"
+  },
+  "homepage": "https://github.com/lulebe/Tetris#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
