@@ -18,6 +18,11 @@ var reward = $('reward');
 var gameOver = $('gameOver');
 var btnRestart = $('restart');
 var finalScore = $('finalScore');
+var ctrlLeft = $('ctrlLeft');
+var ctrlRight = $('ctrlRight');
+var ctrlRotate = $('ctrlRotate');
+var ctrlDown = $('ctrlDown');
+var btnStart = $('start');
 
 
 //defaults
@@ -29,8 +34,8 @@ var SIDE_WIDTH = consts.SIDE_WIDTH;
 */
 var getContainerSize = function(maxW,maxH){
 
-	var dw = document.documentElement.clientWidth;
-	var dh = document.documentElement.clientHeight;
+	var dw = document.documentElement.clientWidth * 0.75;
+	var dh = document.documentElement.clientHeight * 0.75;
 
 	var size = {};
 	if (dw>dh){
@@ -53,7 +58,6 @@ var layoutView = function(container,maxW,maxH){
 	var st = container.style;
 	st.height = size.height + 'px';
 	st.width = size.width + 'px';
-	st.marginTop = (-(size.height/2)) + 'px';
 	st.marginLeft = (-(size.width/2)) + 'px';
 
 	//layout scene
@@ -83,6 +87,8 @@ var tetrisView = {
 	  this.scene = scene;
 	  this.preview = preview;
 	  this.btnRestart = btnRestart;
+		this.btnStart = btnStart;
+		this.ctrls = {left: ctrlLeft, right: ctrlRight, rotate: ctrlRotate, down: ctrlDown}
 	  layoutView(this.container,maxW,maxH);
 	  this.scene.focus();
 
@@ -90,9 +96,9 @@ var tetrisView = {
 		 rewardInfo.className = 'invisible';
 	  });
 	},
-	// Update the score 
+	// Update the score
 	setScore:function(scoreNumber){
-		score.innerHTML = scoreNumber;	
+		score.innerHTML = scoreNumber;
 	},
 	// Update the finnal score
 	setFinalScore:function(scoreNumber){
@@ -106,14 +112,42 @@ var tetrisView = {
 	setReward:function(rewardScore){
 		if (rewardScore>0){
 			reward.innerHTML = rewardScore;
-			rewardInfo.className = 'fadeOutUp animated';	
+			rewardInfo.className = 'fadeOutUp animated';
 		}else{
 			rewardInfo.className = 'invisible';
 		}
 	},
 	// Set game over view
 	setGameOver:function(isGameOver){
+		if (isGameOver) {
+			ctrlLeft.classList.add("hidden");
+			ctrlRight.classList.add("hidden");
+			ctrlRotate.classList.add("hidden");
+			ctrlDown.classList.add("hidden");
+			btnRestart.classList.remove("hidden");
+		} else {
+			ctrlLeft.classList.remove("hidden");
+			ctrlRight.classList.remove("hidden");
+			ctrlRotate.classList.remove("hidden");
+			ctrlDown.classList.remove("hidden");
+			btnRestart.classList.add("hidden");
+		}
 		gameOver.style.display = isGameOver?'block':'none';
+	},
+	setStart:function (started) {
+		if (started) {
+			ctrlLeft.classList.remove("hidden");
+			ctrlRight.classList.remove("hidden");
+			ctrlRotate.classList.remove("hidden");
+			ctrlDown.classList.remove("hidden");
+			btnStart.classList.add("hidden");
+		} else {
+		ctrlLeft.classList.add("hidden");
+		ctrlRight.classList.add("hidden");
+		ctrlRotate.classList.add("hidden");
+		ctrlDown.classList.add("hidden");
+		btnStart.classList.remove("hidden");
+		}
 	}
 };
 
