@@ -50,6 +50,8 @@
 	var views = __webpack_require__(4);
 	var canvas = __webpack_require__(5);
 
+	var scoring = __webpack_require__(6);
+
 
 
 
@@ -356,6 +358,7 @@
 			views.setGameOver(this.isGameOver);
 			if (this.isGameOver){
 				views.setFinalScore(this.score);
+				scoring.sendScore(this.score);
 			}
 		},
 		// Check and update game data
@@ -1235,6 +1238,32 @@
 
 
 	module.exports = tetrisCanvas;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = {};
+
+	var getParameterByName = function (name, url) {
+	  if (!url) url = window.location.href;
+	  name = name.replace(/[\[\]]/g, "\\$&");
+	  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+	      results = regex.exec(url);
+	  if (!results) return null;
+	  if (!results[2]) return '';
+	  return decodeURIComponent(results[2].replace(/\+/g, " "));
+	};
+
+	//get current msgId & userId
+	var inline_message_id = getParameterByName('imid');
+	var user_id = getParameterByName('uid');
+
+	module.exports.sendScore = function (score) {
+	  if (!inline_message_id || !user_id) return;
+	  qwest.post('/api/setScore', {inline_message_id: inline_message_id, user_id: user_id, score: score});
+	}
+
 
 /***/ }
 /******/ ]);

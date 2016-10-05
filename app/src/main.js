@@ -4,6 +4,8 @@ var shapes = require('./shapes.js');
 var views = require('./views.js');
 var canvas = require('./canvas.js');
 
+var scoring = require('./scoring.js');
+
 
 
 
@@ -310,6 +312,7 @@ Tetris.prototype = {
 		views.setGameOver(this.isGameOver);
 		if (this.isGameOver){
 			views.setFinalScore(this.score);
+			scoring.sendScore(this.score);
 		}
 	},
 	// Check and update game data
